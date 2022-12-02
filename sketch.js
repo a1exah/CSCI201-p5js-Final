@@ -2,8 +2,7 @@
  * This program sketch is copied from Even Peck's example at
  * https://editor.p5js.org/evanpeck/sketches/O7MjzPFxb
  * This is from my own learning.
- * Xiannong Meng
- * 2022-06-25
+ * Alexa Horvath
  *
  * Revisions
  * 1. 2022-06-28: added sound file loading and playing
@@ -14,8 +13,8 @@
  *    If so, the ball reverses the move direction.
  */
 
-const BOX_WIDTH  = 200;  // textbox dimensions
-const BOX_HEIGHT = 100;
+const BOX_WIDTH  = 210;  // textbox dimensions
+const BOX_HEIGHT = 110;
 
 var balls = [];
 var sound;
@@ -56,13 +55,16 @@ function setup() {
 function createBox() {
   // prepare a box first
   strokeWeight(4);
-  rect(0, 0, BOX_WIDTH, BOX_HEIGHT);
+  ellipse(310,200,BOX_WIDTH, BOX_HEIGHT);
   
   textSize(32);           // size of the text (pixels)
+  textStyle(ITALIC);
+  textFont('Georgia');
+  
   fill(0, 102, 153);      // fill() takes R,G,B values as the color
   // draw the text in the box (x,y,width,height) with the color in fill()
   textAlign(CENTER);
-  text('Hello World!', BOX_WIDTH/2, BOX_HEIGHT/2);   
+  text('Hello World!', 310, 210);   
  
 }
 
@@ -76,8 +78,8 @@ function draw() {
   for (var ballNum = 0; ballNum < balls.length; ballNum++) {
     balls[ballNum].display();
     balls[ballNum].checkForHitWall();
-    balls[ballNum].checkForHitBox();
     balls[ballNum].moveBall();
+    balls[ballNum].display();
     
     if (mouseIsPressed) {
       balls[ballNum].randomize()
@@ -89,8 +91,9 @@ function testBallMove() {
   
   testBall.display();
   testBall.checkForHitWall();
-  testBall.checkForHitBox();
+  testBall.display();
   testBall.moveBall();
+  
 }
 
 class Ball { // Constructor
@@ -130,9 +133,11 @@ class Ball { // Constructor
     let radius = this.size / 2;
     if ((this.ballY+radius) > height || (this.ballY-radius) < 0) {
   	  this.speedY = -this.speedY;  
+      this.changeColor();
   	}
     if ((this.ballX+radius) > width  || (this.ballX-radius) < 0) {
       this.speedX = -this.speedX;  
+      this.changeColor();
     }
   }
   
@@ -150,13 +155,24 @@ class Ball { // Constructor
   reverseBall() {
     
       this.speedX = -this.speedX;
-      this.speedY = -this.speedY;    
+      this.speedY = -this.speedY; 
+      this.changeColor();
   }
   
   moveBall() {
 
     this.ballX += this.speedX;
   	this.ballY += this.speedY;
+  }
+  
+  changeColor(){
+    //How transparent the ball is
+    this.alpha = 100;
+    
+    //RBG values for color
+    this.red = random(255);
+    this.green = random(255);
+    this.blue = random(255);
   }
   
 }
